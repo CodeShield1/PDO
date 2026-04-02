@@ -1,7 +1,6 @@
 <?php
 require "db.php";
 
-// SELECT جميع recettes
 $stmt = $pdo->query("SELECT * FROM recipes ORDER BY created_at DESC");
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
