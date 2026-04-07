@@ -1,24 +1,24 @@
 <?php
 
-// 1. get all recipes
-function getRecipes($pdo) {
-    $stmt = $pdo->query("SELECT * FROM recipes ORDER BY created_at DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    // 1. get all recipes
+    function getRecipes($pdo) {
+        $stmt = $pdo->query("SELECT * FROM recipes ORDER BY created_at DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-// 2. search
-function searchRecipes($pdo, $keyword) {
-    $stmt = $pdo->prepare("SELECT * FROM recipes WHERE name LIKE ? ORDER BY created_at DESC");
-    $stmt->execute(["%$keyword%"]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    // 2. search
+    function searchRecipes($pdo, $keyword) {
+        $stmt = $pdo->prepare("SELECT * FROM recipes WHERE name LIKE ? ORDER BY created_at DESC");
+        $stmt->execute(["%$keyword%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-// 3. filter
-function filterByCategory($pdo, $category) {
-    $stmt = $pdo->prepare("SELECT * FROM recipes WHERE category = ? ORDER BY created_at DESC");
-    $stmt->execute([$category]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    // 3. filter
+    function filterByCategory($pdo, $category) {
+        $stmt = $pdo->prepare("SELECT * FROM recipes WHERE category = ? ORDER BY created_at DESC");
+        $stmt->execute([$category]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 // 4. sort
 function sortRecipes($pdo, $order) {
@@ -42,4 +42,31 @@ function sortRecipes($pdo, $order) {
 
     $stmt = $pdo->query("SELECT * FROM recipes $sql");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
+
+
+
+
+function insertRecipe($pdo, $name, $category, $prep_time, $image){
+
+    $stmt = $pdo->prepare("
+        INSERT INTO recipes (name, category, prep_time, image)
+        VALUES (?, ?, ?, ?)
+    ");
+
+    $stmt->execute([$name, $category, $prep_time, $image]);
+
+}
+
+
+
+function deleteRecipe($pdo, $id) {
+
+    $stmt = $pdo->prepare("DELETE FROM recipes WHERE id = ?");
+
+    $stmt->execute([$id]);
 }

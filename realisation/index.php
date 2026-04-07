@@ -2,20 +2,19 @@
 require "db.php";
 require "functions.php";
 
-// default
+
 $recipes = getRecipes($pdo);
 
-// search
 if(isset($_GET['search']) && $_GET['search'] != "") {
     $recipes = searchRecipes($pdo, $_GET['search']);
 }
 
-// filter
+
 if(isset($_GET['category']) && $_GET['category'] != "") {
     $recipes = filterByCategory($pdo, $_GET['category']);
 }
 
-// sort
+
 if(isset($_GET['sort']) && $_GET['sort'] != "") {
     $recipes = sortRecipes($pdo, $_GET['sort']);
 }
@@ -26,14 +25,7 @@ if(isset($_GET['sort']) && $_GET['sort'] != "") {
 <head>
     <meta charset="UTF-8">
     <title>Recettes</title>
-    <style>
-        body { font-family: Arial; background:#f5f5f5; }
-        .container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:20px; }
-        .card { background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-        img { width:100%; height:180px; object-fit:cover; }
-        .content { padding:10px; }
-        form { margin-bottom:20px; text-align:center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -58,25 +50,35 @@ if(isset($_GET['sort']) && $_GET['sort'] != "") {
     </select>
 
     <button type="submit">OK</button>
+
+    <a href="create.php" class="btn">➕ Ajouter</a>
+
 </form>
+
 
 <div class="container">
 
-<?php if(empty($recipes)): ?>
-    <p style="text-align:center;">❌ Aucune recette trouvée</p>
-<?php endif; ?>
+    <?php if(empty($recipes)): ?>
+        <p style="text-align:center;"> Aucune recette trouvée</p>
+    <?php endif; ?>
 
-<?php foreach($recipes as $recipe): ?>
-    <div class="card">
-        <img src="<?= htmlspecialchars($recipe['image']) ?>">
+    <?php foreach($recipes as $recipe): ?>
+        <div class="card">
+            <img src="<?= htmlspecialchars($recipe['image']) ?>">
 
-        <div class="content">
-            <h3><?= htmlspecialchars($recipe['name']) ?></h3>
-            <p><?= htmlspecialchars($recipe['category']) ?></p>
-            <p><?= htmlspecialchars($recipe['prep_time']) ?> min</p>
+            <div class="content">
+                <h3><?= htmlspecialchars($recipe['name']) ?></h3>
+                <p><?= htmlspecialchars($recipe['category']) ?></p>
+                <p><?= htmlspecialchars($recipe['prep_time']) ?> min</p>
+                
+                <a href="delete.php?id=<?= $recipe['id'] ?>" 
+                class="btn-delete"
+                onclick="return confirm('Are you sure?')">
+                Delete
+                </a>
+            </div>
         </div>
-    </div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 
 </div>
 
