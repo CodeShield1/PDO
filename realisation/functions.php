@@ -70,3 +70,16 @@ function deleteRecipe($pdo, $id) {
 
     $stmt->execute([$id]);
 }
+
+
+
+function updateRecipe($pdo, $id, $name, $category, $prep_time, $image) {
+
+    $stmt = $pdo->prepare("
+        UPDATE recipes 
+        SET name = ?, category = ?, prep_time = ?, image = ?
+        WHERE id = ?
+    ");
+
+    $stmt->execute([$name, $category, $prep_time, $image, $id]);
+}
