@@ -23,24 +23,39 @@ $product = getalldata($pdo);
 <body>
 
 <h1>📦 Liste des Produits</h1>
+<a href="create.php" class="btn">➕ Ajouter</a>
 
-<div class="container">
-    <?php if(empty($product)): ?>
-        <p style="text-align:center;">Aucun produit trouvé</p>
-    <?php else: ?>
-
-        <?php foreach($product as $item): ?>
-            <div class="card">
-                <div class="content">
-                    <h3><?= htmlspecialchars($item['name']) ?></h3>
-                    <p class="price"><?= htmlspecialchars($item['price']) ?> DH</p>
-                    <p class="quantity">Quantité: <?= htmlspecialchars($item['quantity']) ?></p>
-                </div>
-            </div>
-        <?php endforeach; ?>
-
-    <?php endif; ?>
-</div>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if(empty($product)): ?>
+            <tr>
+                <td colspan="5" style="text-align:center;">Aucun produit trouvé</td>
+            </tr>
+        <?php else: ?>
+            <?php foreach($product as $item): ?>
+                <tr>
+                    <td><?= htmlspecialchars($item['id']) ?></td>
+                    <td><?= htmlspecialchars($item['name']) ?></td>
+                    <td><?= htmlspecialchars($item['price']) ?> DH</td>
+                    <td><?= htmlspecialchars($item['quantity']) ?></td>
+                    <td>
+                        <a href="edite.php?id=<?= $item['id'] ?>" class="btn-edit">✏️ Modifier</a>
+                        <a href="delete.php?id=<?= $item['id'] ?>" class="btn-delete" onclick="return confirm('Êtes-vous sûr?')">🗑️ Supprimer</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
 
 </body>
 </html>
