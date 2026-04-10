@@ -126,3 +126,67 @@ h1 {
 .btn-back:hover {
     text-decoration: underline;
 }
+
+table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    border-collapse: collapse;
+}
+
+thead {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+tbody tr:hover {
+    background: #f8f9fb;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    display: block;
+    width: fit-content;
+}
