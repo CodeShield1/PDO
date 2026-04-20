@@ -3,13 +3,13 @@ require "db.php";
 require "functions.php";
 
 $erreurs = [];
-$name = $price = $quantity = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'];
     $name = trim($_POST['name']);
     $price = trim($_POST['price']);
     $quantity = trim($_POST['quantity']);
-
+    
     if (empty($name)) {
         $erreurs[] = "Le nom du produit est obligatoire.";
     }
@@ -25,12 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!is_numeric($quantity) || $quantity < 0) {
         $erreurs[] = "La quantité doit être un nombre positif ou zéro.";
     }
-
+    
     if (empty($erreurs)) {
-        Create_Products($pdo, $name, $price, $quantity);
+        Edite_Products($pdo, $id, $name, $price, $quantity);
         header("Location: index.php");
         exit();
     }
+}
+
+$id = $_GET['id'];
+
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->execute([$id]);
+$product = $stmt->fetch();
+
+if (!$product) {
+    die("Produit introuvable.");
 }
 ?>
 
@@ -38,13 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter Produit</title>
+    <title>Modifier Produit</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>➕ Ajouter Produit</h2>
+    <h2>✏️ Modifier Produit</h2>
 
     <?php if (!empty($erreurs)): ?>
         <div class="error-box">
@@ -58,22 +68,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="POST" class="form-container">
         
+        <input type="hidden" name="id" value="<?= $product['id'] ?>">
+        
         <div class="form-group">
             <label>Nom du produit</label>
-            <input type="text" name="name" value="<?= htmlspecialchars($name) ?>">
+            <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>">
         </div>
 
         <div class="form-group">
             <label>Prix</label>
-            <input type="number" name="price" step="0.01" value="<?= htmlspecialchars($price) ?>">
+            <input type="number" name="price" step="0.01" value="<?= htmlspecialchars($product['price']) ?>">
         </div>
 
         <div class="form-group">
             <label>Quantité</label>
-            <input type="number" name="quantity" value="<?= htmlspecialchars($quantity) ?>">
+            <input type="number" name="quantity" value="<?= htmlspecialchars($product['quantity']) ?>">
         </div>
 
-        <button type="submit" class="btn-submit">➕ Ajouter le produit</button>
+        <button type="submit">Modifier</button>
         <a href="index.php" class="btn-back">Retour</a>
 
     </form>

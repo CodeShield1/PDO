@@ -1,0 +1,21 @@
+{
+    "php.version": "8.2",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "MyDatabase",
+            "group": "Local",
+            "database": "join",
+            "username": "root",
+            "password": ""
+        }
+    ]
+}

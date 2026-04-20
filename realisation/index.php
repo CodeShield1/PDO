@@ -71,11 +71,16 @@ if(isset($_GET['sort']) && $_GET['sort'] != "") {
                 <p><?= htmlspecialchars($recipe['category']) ?></p>
                 <p><?= htmlspecialchars($recipe['prep_time']) ?> min</p>
                 
-                <a href="delete.php?id=<?= $recipe['id'] ?>" 
-                class="btn-delete"
-                onclick="return confirm('Are you sure?')">
-                Delete
-                </a>
+                <div class="btn-group">
+                    <a href="edit.php?id=<?= $recipe['id'] ?>" class="btn">
+                        Edit
+                    </a>
+                    <a href="delete.php?id=<?= $recipe['id'] ?>" 
+                    class="btn btn-delete"
+                    onclick="return confirm('Are you sure?')">
+                        Delete
+                    </a>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>

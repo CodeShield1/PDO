@@ -23,7 +23,7 @@ if(isset($_POST['name'])){
         'category_id' => $category_id
     ]);
 
-    header("Location: read.php");
+    header(": read.php");
 }
 ?>
 
