@@ -1,80 +1,75 @@
-
 <?php
-require_once "../db.php";
 
-// categories select
-$sql = "SELECT * FROM categories";
-$stmt = $pdo->query($sql);
-$categories = $stmt->fetchAll();
+ require_once "../db.php";
+ require_once "../functions.php";  
 
-// إلا user دار submit
-if(isset($_POST['name'])){
-    $name = $_POST['name'];
-    $prep_time = $_POST['prep_time'];
-    $category_id = $_POST['category_id'];
+ 
 
-    $sql = "INSERT INTO recipes(name, prep_time, category_id)
-            VALUES(:name, :prep_time, :category_id)";
+ if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $categories = getCategories($pdo);
+    $name = $_POST["name"];
+    $prep_time = $_POST["prep_time"];
+    $category_id = $_POST["category_id"];
     
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([ 
-        'name' => $name,
-        'prep_time' => $prep_time,
-        'category_id' => $category_id
-    ]);
+    // Image Upload Logic
+    $image = "";
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+        $image_name = time() . '_' . $_FILES['image']['name'];
+        $target = "../images/" . $image_name;
+        
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+            $image = $image_name;
+        }
+    }
 
-    header(": read.php");
-}
+    if (createRecipe($pdo, $name, $prep_time, $image, $category_id)) {
+        header("Location: read.php");
+        exit();
+    }
+ } 
+
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter Recette</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <title>Ajouter une Recette</title>
 </head>
 <body>
+    <div class="container">
+        <h1>Ajouter une nouvelle recette</h1>
+        <form action="POST" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name">Nom de la recette :</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            
+            <div>
+                <label for="prep_time">Temps de préparation (min) :</label>
+                <input type="number" name="prep_time" id="prep_time" required>
+            </div>
 
-<div class="container" style="max-width: 600px;">
-    <h1>Ajouter une recette</h1>
+            <div>
+                <label for="category_id">Catégorie :</label>
+                <select name="category_id" id="category_id" required>
+                    <option value="">--Choisir une catégorie--</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-    <form method="POST">
+            <div>
+                <label for="image">Image :</label>
+                <input type="file" name="image" id="image" accept="image/*" required>
+            </div>
 
-        <div class="form-group">
-            <label>Nom de la recette</label>
-            <input type="text" name="name" placeholder="Ex: Tajine de poulet" required>
-        </div>
-
-        <div class="form-group">
-            <label>Temps de préparation (min)</label>
-            <input type="number" name="prep_time" placeholder="Ex: 45" required>
-        </div>
-
-        <div class="form-group">
-            <label>Catégorie</label>
-            <select name="category_id" required>
-                <option value="">-- Choisir une catégorie --</option>
-                <?php foreach($categories as $cat): ?>
-                    <option value="<?= $cat['id'] ?>">
-                        <?= htmlspecialchars($cat['name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div style="margin-top: 20px;">
-            <button type="submit" class="btn btn-primary" style="width: 100%;">🚀 Ajouter la recette</button>
-            <a href="read.php" class="btn" style="width: 100%; margin-top: 10px; text-align: center;">🔙 Retour</a>
-        </div>
-
-    </form>
-</div>
-
+            <button type="submit">Ajouter</button>
+        </form>
+        <a href="read.php">Retour à la liste</a>
+    </div>
 </body>
 </html>
-
-
-
-
-
