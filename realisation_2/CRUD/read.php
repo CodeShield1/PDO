@@ -17,40 +17,38 @@ $recipes = getRecipes($pdo);
     <div class="container">
         <div class="table-card">
             <div class="card-header">
-                <h1>Gestion des Recettes</h1>
-                <a href="creat.php" class="btn btn-primary">+ Ajouter une recette</a>
+                <h1>Mes Recettes</h1>
+                <a href="creat.php" class="btn btn-primary">+ Ajouter</a>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>id</th>
                         <th>Aperçu</th>
-                        <th>Nom de la Recette</th>
+                        <th>Nom</th>
                         <th>Catégorie</th>
                         <th style="text-align: right;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($recipes as $recipe): ?>
+                        
                         <tr>
-                            <td class="recipe-id">#<?= htmlspecialchars($recipe['id']) ?></td>
+
                             <td>
-                                <?php if (!empty($recipe['image'])): ?>
-                                    <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" alt="Image" class="recipe-img">
-                                <?php else: ?>
-                                    <div class="recipe-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #94a3b8;">N/A</div>
-                                <?php endif; ?>
+                               # <?= htmlspecialchars($recipe['id']) ?>
                             </td>
                             <td>
-                                <div class="recipe-name"><?= htmlspecialchars($recipe['name'] ?? 'Sans nom') ?></div>
-                                <div style="font-size: 0.75rem; color: var(--secondary);"><?= htmlspecialchars($recipe['prep_time']) ?> min de préparation</div>
+                                <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" class="recipe-img">
                             </td>
                             <td>
-                                <span class="category-badge"><?= htmlspecialchars($recipe['category_name'] ?? 'Général') ?></span>
+                                <strong><?= htmlspecialchars($recipe['name']) ?></strong>
+                                <div style="font-size: 0.7rem; color: var(--secondary)"><?= $recipe['prep_time'] ?> min</div>
                             </td>
-                            <td class="actions-cell">
+                            <td><span class="category-badge"><?= htmlspecialchars($recipe['category_name'] ?? 'aucun') ?></span></td>
+                            <td style="text-align: right;">
                                 <a href="update.php?id=<?= $recipe['id'] ?>" class="btn btn-edit">Modifier</a>
-                                <a href="delete.php?id=<?= $recipe['id'] ?>" class="btn btn-delete" onclick="return confirm('Supprimer définitivement cette recette ?')">Supprimer</a>
+                                <a href="delete.php?id=<?= $recipe['id'] ?>" class="btn btn-delete" onclick="return confirm('Supprimer ?')">Supprimer</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -58,7 +56,7 @@ $recipes = getRecipes($pdo);
             </table>
         </div>
         <div style="margin-top: 2rem; text-align: center;">
-            <a href="../index.php" style="color: var(--secondary); text-decoration: none; font-size: 0.9rem;">← Retour à l'accueil</a>
+            <a href="../index.php" style="color: var(--secondary); text-decoration: none; font-size: 0.8rem;">← Accueil</a>
         </div>
     </div>
 </body>
