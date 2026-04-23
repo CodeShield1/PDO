@@ -1,32 +1,64 @@
 <?php
 
- require_once "../db.php";
- require_once "../functions.php";  
+    require_once "../db.php";
+    require_once "../functions.php";  
 
- 
-
- if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categories = getCategories($pdo);
-    $name = $_POST["name"];
-    $prep_time = $_POST["prep_time"];
-    $category_id = $_POST["category_id"];
-    
-    // Image Upload Logic
-    $image = "";
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $image_name = time() . '_' . $_FILES['image']['name'];
-        $target = "../images/" . $image_name;
-        
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $image = $image_name;
-        }
-    }
 
-    if (createRecipe($pdo, $name, $prep_time, $image, $category_id)) {
-        header("Location: read.php");
-        exit();
-    }
- } 
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST["name"];
+        $prep_time = $_POST["prep_time"];
+        $category_id = $_POST["category_id"];
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
+            $file = $_FILES['image'];
+            $fileName = $file['name'];
+            $tmpName = $file['tmp_name'];
+            $fileSize = $file['size'];
+
+            // extension
+            $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            // allowed types (pro way)
+            $allowed = ['jpg', 'jpeg', 'png'];
+
+            if (in_array($ext, $allowed)) {
+
+                // size limit (2MB)
+                if ($fileSize <= 2 * 1024 * 1024) {
+
+                    // unique name
+                    $newName = uniqid() . "." . $ext;
+
+                    $uploadDir = "../images/";
+                   $path = $uploadDir . $newName;
+                
+                    // move file
+                    if (move_uploaded_file($tmpName, $path)) {
+
+                        // insert to DB
+                        if (createRecipe($pdo, $name, $prep_time, $newName, $category_id)) {
+                            header("Location: read.php");
+                            exit();
+                        }
+
+                    } else {
+                        $error = "❌ Error uploading file";
+                    }
+
+                } else {
+                   $error = "❌ File too large (max 2MB)";
+                }
+
+            } else {
+               $error = "❌ Only JPG, JPEG, PNG allowed";
+            }
+
+        } else {
+          $error = "❌ No file selected";
+        }
+    } 
 
 ?>
 
@@ -41,7 +73,8 @@
 <body>
     <div class="container">
         <h1>Ajouter une nouvelle recette</h1>
-        <form action="POST" method="POST" enctype="multipart/form-data">
+        <?php if(isset($error)) echo "<p style='color:red'>$error</p>"; ?>
+        <form action="creat.php" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="name">Nom de la recette :</label>
                 <input type="text" name="name" id="name" required>
