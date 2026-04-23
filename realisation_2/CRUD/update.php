@@ -75,20 +75,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Modifier la recette</h1>
-        <?php if (isset($error)) echo "<p style='color:red'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<div class='error-msg'>$error</div>"; ?>
         
-        <form action="update.php?id=<?= $id ?>" method="POST" enctype="multipart/form-data">
-            <div>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
                 <label for="name">Nom de la recette :</label>
                 <input type="text" name="name" id="name" value="<?= htmlspecialchars($recipe['name']) ?>" required>
             </div>
             
-            <div>
+            <div class="form-group">
                 <label for="prep_time">Temps de préparation (min) :</label>
                 <input type="number" name="prep_time" id="prep_time" value="<?= htmlspecialchars($recipe['prep_time']) ?>" required>
             </div>
 
-            <div>
+            <div class="form-group">
                 <label for="category_id">Catégorie :</label>
                 <select name="category_id" id="category_id" required>
                     <?php foreach ($categories as $category): ?>
@@ -99,19 +99,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
 
-            <div>
-                <label for="image">Image (laisser vide pour garder l'actuelle) :</label>
+            <div class="form-group">
+                <label for="image">Image actuelle :</label>
                 <?php if (!empty($recipe['image'])): ?>
-                    <div style="margin-bottom: 10px;">
-                        <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" alt="Actuelle" style="width: 100px; height: auto; display: block; border: 1px solid #ddd;">
+                    <div style="margin-bottom: 15px;">
+                        <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" alt="Actuelle" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e2e8f0;">
                     </div>
                 <?php endif; ?>
+                <label for="image" style="color: var(--secondary); font-size: 0.8rem;">Modifier l'image (optionnel) :</label>
                 <input type="file" name="image" id="image" accept="image/*">
             </div>
 
-            <button type="submit">Enregistrer les modifications</button>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+            </div>
         </form>
-        <a href="read.php">Retour à la liste</a>
+        <a href="read.php">← Retour à la liste</a>
     </div>
 </body>
 </html>
