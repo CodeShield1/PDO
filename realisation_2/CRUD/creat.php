@@ -3,8 +3,6 @@
     require_once "../db.php";
     require_once "../functions.php";  
 
-    $categories = getCategories($pdo);
-
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $_POST["name"];
         $prep_time = $_POST["prep_time"];
@@ -89,9 +87,10 @@
                 <label for="category_id">Catégorie :</label>
                 <select name="category_id" id="category_id" required>
                     <option value="">--Choisir une catégorie--</option>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
-                    <?php endforeach; ?>
+                    <option value="1">Breakfast</option>
+                    <option value="3">Dinner</option>
+                    <option value="4">Dessert</option>
+                    <option value="5">Drinks</option>
                 </select>
             </div>
 

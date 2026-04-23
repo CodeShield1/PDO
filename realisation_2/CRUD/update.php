@@ -2,8 +2,6 @@
 require_once "../db.php";
 require_once "../functions.php";
 
-$categories = getCategories($pdo);
-
 if (!isset($_GET['id'])) {
     header("Location: read.php");
     exit();
@@ -89,11 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div>
                 <label for="category_id">Catégorie :</label>
                 <select name="category_id" id="category_id" required>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['id'] ?>" <?= ($category['id'] == $recipe['category_id']) ? 'selected' : '' ?>>
-                            <?= $category['name'] ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <option value="1" <?= ($recipe['category_id'] == 1) ? 'selected' : '' ?>>Breakfast</option>
+                    <option value="3" <?= ($recipe['category_id'] == 3) ? 'selected' : '' ?>>Dinner</option>
+                    <option value="4" <?= ($recipe['category_id'] == 4) ? 'selected' : '' ?>>Dessert</option>
+                    <option value="5" <?= ($recipe['category_id'] == 5) ? 'selected' : '' ?>>Drinks</option>
                 </select>
             </div>
 

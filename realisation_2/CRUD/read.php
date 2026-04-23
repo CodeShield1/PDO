@@ -2,7 +2,7 @@
 require '../db.php';
 require '../functions.php';
 
-$recipes = getRecipes($pdo);
+$recipes = getRecipes($pdo );
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@ $recipes = getRecipes($pdo);
                         <tr>
 
                             <td>
-                               # <?= htmlspecialchars($recipe['id']) ?>
+                                # <?= htmlspecialchars($recipe['id']) ?>
                             </td>
                             <td>
                                 <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" class="recipe-img">

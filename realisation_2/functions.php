@@ -15,13 +15,6 @@
    }
 
 
-   function getCategories($pdo) {
-      $sql = "SELECT * FROM categories";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute();
-      return $stmt->fetchAll();
-   }
-
    function createRecipe($pdo, $name, $prep_time, $image, $category_id) {
       $sql = "INSERT INTO recipes (name, prep_time, image, category_id) 
       VALUES (:name, :prep_time, :image, :category_id)";
