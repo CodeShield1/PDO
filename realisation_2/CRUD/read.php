@@ -20,6 +20,7 @@ $recipes = getRecipes($pdo);
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Image</th>
                     <th>Nom</th>
                     <th>Catégorie</th>
                     <th style="text-align: right;">Actions</th>
@@ -29,7 +30,14 @@ $recipes = getRecipes($pdo);
                 <?php foreach ($recipes as $recipe): ?>
                     <tr>
                         <td><?= htmlspecialchars($recipe['id']) ?></td>
-                        <td><strong><?= htmlspecialchars($recipe['name'] ?? $recipe['title'] ?? 'N/A') ?></strong></td>
+                        <td>
+                            <?php if (!empty($recipe['image'])): ?>
+                                <img src="../images/<?= htmlspecialchars($recipe['image']) ?>" alt="Image" class="recipe-img">
+                            <?php else: ?>
+                                <div class="recipe-img" style="background: #eee; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">No Img</div>
+                            <?php endif; ?>
+                        </td>
+                        <td><strong><?= htmlspecialchars($recipe['name'] ?? 'N/A') ?></strong></td>
                         <td><span class="text-muted"><?= htmlspecialchars($recipe['category_name'] ?? 'Aucune') ?></span></td>
                         <td style="text-align: right;">
                             <a href="update.php?id=<?= $recipe['id'] ?>" class="btn-edit">Modifier</a>
