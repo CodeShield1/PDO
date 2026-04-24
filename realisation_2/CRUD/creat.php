@@ -30,7 +30,7 @@
                     $newName = uniqid() . "." . $ext;
 
                     $uploadDir = "../images/";
-                   $path = $uploadDir . $newName;
+                    $path = $uploadDir . $newName;
                 
                     // move file
                     if (move_uploaded_file($tmpName, $path)) {
@@ -88,9 +88,11 @@
                 <select name="category_id" id="category_id" required>
                     <option value="">--Choisir une catégorie--</option>
                     <option value="1">Breakfast</option>
+                    <option value="2">Lunch</option>
                     <option value="3">Dinner</option>
                     <option value="4">Dessert</option>
                     <option value="5">Drinks</option>
+                    
                 </select>
             </div>
 
